@@ -16,7 +16,7 @@ class YieldCurve extends React.Component {
 
         return (
             <Panel loading={!this.props.yieldsForDate} heading={heading}>
-                <canvas className="yield-curve-graph" id="yield-curve-graph-id"></canvas>
+                <canvas ref="chart"></canvas>
             </Panel>
         )
 
@@ -61,7 +61,7 @@ class YieldCurve extends React.Component {
             this.chart.data.datasets[0].data = yieldData;
             this.chart.update(0);
         } else {
-            this.chart = new Chart(document.getElementById('yield-curve-graph-id'), {
+            this.chart = new Chart(this.refs.chart, {
                 type: 'line',
                 data: {
                     datasets: [

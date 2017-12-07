@@ -43,7 +43,7 @@ class YieldDistribution extends React.Component {
         const heading = 'Distribution of % change in ' + data.getDurationLabel(this.props.durationInMonths) + ' treasury bonds';
         return (
             <Panel loading={!this.props.allYields} heading={heading}>
-                <canvas id="change-distribution-graph-id"></canvas>
+                <canvas ref="chart"></canvas>
                 <div>
                     <p className="scale-trigger">
                         <input type="checkbox" checked={this.state.limitDurationsTo95th}
@@ -80,7 +80,7 @@ class YieldDistribution extends React.Component {
             this.chart.update();
         }
         else {
-            this.chart = new Chart(document.getElementById('change-distribution-graph-id'), {
+            this.chart = new Chart(this.refs.chart, {
                 type: 'bar',
                 data: {
                     labels: labels,

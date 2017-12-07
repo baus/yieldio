@@ -55,7 +55,7 @@ class YieldSpread extends React.Component {
                               heading={heading}
                               onDuration1Change={this.onDuration1Change.bind(this)}
                               onDuration2Change={this.onDuration2Change.bind(this)}>
-                <canvas id="yield-spread-graph-id"></canvas>
+                <canvas ref="chart"></canvas>
             </YieldSpreadPanel>
         );
     }
@@ -70,7 +70,7 @@ class YieldSpread extends React.Component {
             this.chart.update();
         }
         else {
-            this.chart = new Chart(document.getElementById('yield-spread-graph-id'), {
+            this.chart = new Chart(this.refs.chart, {
                 type: 'line',
 
                 data: {

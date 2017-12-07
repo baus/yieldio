@@ -85,7 +85,7 @@ class YieldSpread extends React.Component {
                                animationRunning={this.state.animationRunning}
                                onAnimationToggle={this.onAnimationToggle.bind(this)}
             >
-                <canvas id="yield-history-graph-id" style={{height: '150px', width: '800px'}}></canvas>
+                <canvas ref="chart" style={{height: '150px', width: '800px'}}></canvas>
             </YieldSpreadPanel>
         );
     }
@@ -141,9 +141,6 @@ class YieldSpread extends React.Component {
                 if (elem !== undefined && that.enableCallback) {
                     that.props.onDateChange(new Date(targetChart.config.data.datasets[0].data[elem._index].t));
                     that.currentAnimationFrame = elem._index;
-                    /*
-                     that.mouseOverCallback(elem._index, targetChart.config.data.datasets[0].data[elem._index].t);
-                     */
                 }
                 that.enableCallback = true;
             },
@@ -157,7 +154,7 @@ class YieldSpread extends React.Component {
             this.chart.update();
         }
         else {
-            this.chart = new Chart(document.getElementById('yield-history-graph-id'), {
+            this.chart = new Chart(this.refs.chart, {
                 plugins: [mouseOverPlugin],
                 type: 'line',
 
