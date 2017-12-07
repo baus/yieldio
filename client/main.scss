@@ -1,0 +1,24 @@
+@import "bootstrapcustom.scss";
+@import "~bootstrap/scss/bootstrap";
+@import "~bootstrap/scss/_variables.scss";
+@import "~bootstrap/scss/_functions.scss";
+@import "~bootstrap/scss/mixins/_breakpoints.scss";
+
+
+@include media-breakpoint-up(xs) {
+  .panel-heading {
+    font-size: 14px;
+  }
+}
+
+@include media-breakpoint-up(md) {
+  .panel-heading {
+    font-size: 15px;
+  }
+}
+
+@include media-breakpoint-up(lg) {
+  .panel-heading {
+    font-size: 23px;
+  }
+}
