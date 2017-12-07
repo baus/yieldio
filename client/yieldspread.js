@@ -41,6 +41,12 @@ class YieldSpread extends React.Component {
         this.setState({duration2: durationInMonths});
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+        return this.props.allYields !== nextProps.allYields ||
+            this.state.duration1 !== nextState.duration1 ||
+            this.state.duration2 !== nextState.duration2
+    }
+
     render() {
         const heading = data.getShortDurationLabel(this.state.duration1) + ' - ' +
             data.getShortDurationLabel(this.state.duration2) + ' Treasury bond spread';
