@@ -40,7 +40,6 @@
     "compression": "^1.7.1",
     "connect-flash": "^0.1.1",
     "connect-livereload": "^0.6.0",
-    "ejs": "^2.5.7",
     "express": "^4.15.5",
     "lazylines": "^1.0.0",
     "ntwitter": "^0.5.0",

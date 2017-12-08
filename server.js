@@ -7,10 +7,6 @@ const data = require('./server/lib/data');
 const twitter = require('./server/lib/twitter');
 const app = express();
 
-// Express settings
-require('./server/lib/config/express')(app);
-
-
 if ('development' === config.env) {
     const webpackConfig = require('./webpack.config.js');
     const compiler = webpack(webpackConfig);
