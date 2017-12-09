@@ -21,15 +21,15 @@ module.exports = {
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        presets: ["es2015", "react"]
+                        presets: ['env', 'react']
                     }
                 }
             },
             {
                 test: /\.css$/,
                 use: ExtractTextPlugin.extract({
-                    fallback: "style-loader",
-                    use: "css-loader"
+                    fallback: 'style-loader',
+                    use: 'css-loader'
                 })
             }, {
                 test: /\.scss$/,
@@ -47,13 +47,6 @@ module.exports = {
                             }
                         },
                         {
-                            loader: 'postcss-loader',
-                            options: {
-                                plugins: () => [require('autoprefixer')],
-                                sourceMap: true
-                            }
-                        },
-                        {
                             loader: 'sass-loader',
                             options: {
                                 sourceMap: true
@@ -63,13 +56,8 @@ module.exports = {
                 })
             }]
     },
-    devServer: {
-        contentBase: path.join(__dirname, "dist"),
-        compress: true,
-        port: 8080
-    },
     plugins: [
-        new ExtractTextPlugin("styles.css"),
+        new ExtractTextPlugin('styles.css'),
         new webpack.LoaderOptionsPlugin({
             minimize: true,
             debug: false
