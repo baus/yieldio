@@ -18,7 +18,7 @@ const YieldRow = props => {
             <td>{bpsChange}</td>
             <td>{percentageChange}</td>
         </tr>
-    )
+    );
 };
 
 const YieldTable = props => {
