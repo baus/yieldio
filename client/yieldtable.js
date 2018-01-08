@@ -22,20 +22,22 @@ const YieldRow = props => {
 };
 
 const YieldTable = props => {
-    let yieldRows = [];
     const heading = "Treasury bond yields as of " + FormattedDate.format(props.currentDate);
-    if (props.yieldsForDate) {
-        yieldRows = data.SHORT_DURATION_LABELS.map((durationLabel, index) => {
-            const label = durationLabel[1];
-            const percentageYield = props.yieldsForDate[index][0];
-            const bpsChange = props.yieldsForDate[index][1];
-            const percentageChange = props.yieldsForDate[index][2];
-            return (
-                <YieldRow key={durationLabel[0]} label={label} percentageYield={percentageYield} bpsChange={bpsChange}
-                          percentageChange={percentageChange}/>
-            );
-        });
-    }
+    const yieldRows = data.SHORT_DURATION_LABELS.map((durationLabel, index) => {
+        const label = durationLabel[1];
+        let percentageYield = null;
+        let bpsChange = null;
+        let percentageChange = null;
+        if (props.yieldsForDate) {
+            percentageYield = props.yieldsForDate[index][0];
+            bpsChange = props.yieldsForDate[index][1];
+            percentageChange = props.yieldsForDate[index][2];
+        }
+        return (
+            <YieldRow key={durationLabel[0]} label={label} percentageYield={percentageYield} bpsChange={bpsChange}
+                      percentageChange={percentageChange}/>
+        );
+    });
     return (
         <Panel loading={false} heading={heading}>
             <table id="yield-curve-legend" className="table">
