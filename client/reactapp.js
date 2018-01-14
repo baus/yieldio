@@ -4,7 +4,7 @@ import YieldCurve from './yieldcurve';
 import YieldDistribution from './yielddistribution';
 import YieldTable from './yieldtable';
 import YieldCallout from './yieldcallout';
-import YieldSpread from './yieldspread'
+import YieldSpread from './yieldspread';
 import * as data from './data';
 
 
