@@ -5,7 +5,7 @@ import DurationDropdown from './durationdropdown';
 import * as data from './data';
 
 
-const YieldSpreadPanel = props => {
+const YieldHistoryPanel = props => {
     let content = null;
     if (props.loading) {
         content = (<div><Spinner/>{props.children}</div>);
@@ -30,7 +30,7 @@ const YieldSpreadPanel = props => {
 };
 
 
-class YieldSpread extends React.Component {
+class YieldHistory extends React.Component {
     constructor(props) {
         super(props);
         this.chart = null;
@@ -79,14 +79,14 @@ class YieldSpread extends React.Component {
     render() {
         const heading = data.getDurationLabel(this.state.duration) + " treasury bond yield history";
         return (
-            <YieldSpreadPanel loading={!this.props.allYields}
+            <YieldHistoryPanel loading={!this.props.allYields}
                                heading={heading}
                                onDurationChange={this.onDurationChange.bind(this)}
                                animationRunning={this.state.animationRunning}
                                onAnimationToggle={this.onAnimationToggle.bind(this)}
             >
                 <canvas ref="chart" style={{height: '150px', width: '800px'}}></canvas>
-            </YieldSpreadPanel>
+            </YieldHistoryPanel>
         );
     }
 
@@ -206,4 +206,4 @@ class YieldSpread extends React.Component {
     }
 }
 
-export default YieldSpread;
+export default YieldHistory;
