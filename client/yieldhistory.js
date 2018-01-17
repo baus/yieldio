@@ -1,11 +1,13 @@
 import React from 'react';
 import Spinner from './spinner';
-import {ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Button} from 'reactstrap';
+import {Button} from 'reactstrap';
 import DurationDropdown from './durationdropdown';
+import CrosshairPlugin from './plugin.crosshair';
 import * as data from './data';
 
 
-const YieldSpreadPanel = props => {
+
+const YieldHistoryPanel = props => {
     let content = null;
     if (props.loading) {
         content = (<div><Spinner/>{props.children}</div>);
@@ -15,7 +17,7 @@ const YieldSpreadPanel = props => {
     let animateButtonText = 'Animate Yield Curve';
     let animateButtonColor = 'success';
     if (props.animationRunning) {
-        animateButtonText = 'Stop Animation'
+        animateButtonText = 'Stop Animation';
         animateButtonColor = 'danger';
     }
 
@@ -30,7 +32,7 @@ const YieldSpreadPanel = props => {
 };
 
 
-class YieldSpread extends React.Component {
+class YieldHistory extends React.Component {
     constructor(props) {
         super(props);
         this.chart = null;
@@ -61,32 +63,17 @@ class YieldSpread extends React.Component {
         });
     }
 
-    drawCrosshairAtPoint(x, y) {
-        if (x < this.chart.chartArea.left || x > this.chart.chartArea.right) {
-            return;
-        }
-        const canvas = this.chart.canvas;
-        const context = canvas.getContext("2d");
-        context.setLineDash([3, 5]);
-        context.beginPath();
-        context.moveTo(x, 0);
-        context.lineTo(x, canvas.scrollHeight);
-        context.strokeStyle = "black";
-        context.stroke();
-        context.closePath();
-    }
-
     render() {
         const heading = data.getDurationLabel(this.state.duration) + " treasury bond yield history";
         return (
-            <YieldSpreadPanel loading={!this.props.allYields}
+            <YieldHistoryPanel loading={!this.props.allYields}
                                heading={heading}
                                onDurationChange={this.onDurationChange.bind(this)}
                                animationRunning={this.state.animationRunning}
                                onAnimationToggle={this.onAnimationToggle.bind(this)}
             >
                 <canvas ref="chart" style={{height: '150px', width: '800px'}}></canvas>
-            </YieldSpreadPanel>
+            </YieldHistoryPanel>
         );
     }
 
@@ -103,6 +90,14 @@ class YieldSpread extends React.Component {
         }
 
         this.animationTimer = setTimeout(this.animateYieldCurve.bind(this), 10);
+    }
+
+    handleMouseOver(date, index) {
+        if (this.enableCallback) {
+            this.props.onDateChange(date);
+            this.currentAnimationFrame = index;
+        }
+        this.enableCallback = true;
     }
 
     drawCrosshairAtIndex(index) {
@@ -128,26 +123,6 @@ class YieldSpread extends React.Component {
         // Massage the input data to show only the requested yields
         let durationInMonths = this.state.duration;
         let yieldData = data.getYieldsForDuration(durationInMonths);
-        let that = this;
-        let mouseOverPlugin = {
-            x: null,
-            y: null,
-            afterEvent: function (targetChart, e) {
-                this.x = e.x;
-                this.y = e.y;
-                let elem = targetChart.getElementsAtEventForMode(e, 'x', {
-                    intersect: false
-                })[0];
-                if (elem !== undefined && that.enableCallback) {
-                    that.props.onDateChange(new Date(targetChart.config.data.datasets[0].data[elem._index].t));
-                    that.currentAnimationFrame = elem._index;
-                }
-                that.enableCallback = true;
-            },
-            afterDraw: function (targetChart) {
-                that.drawCrosshairAtPoint(this.x, this.y);
-            }
-        };
 
         if (this.chart !== null) {
             this.chart.data.datasets[0].data = yieldData;
@@ -155,7 +130,7 @@ class YieldSpread extends React.Component {
         }
         else {
             this.chart = new Chart(this.refs.chart, {
-                plugins: [mouseOverPlugin],
+                plugins: [new CrosshairPlugin(this.handleMouseOver.bind(this))],
                 type: 'line',
 
                 data: {
@@ -206,4 +181,4 @@ class YieldSpread extends React.Component {
     }
 }
 
-export default YieldSpread;
+export default YieldHistory;
