@@ -40,7 +40,7 @@ function parseYields(yieldXML) {
     yields.push(date.getTime());
     YIELD_ELEMENTS.forEach(element =>
         yields.push(
-            [parseFloat(latestDateElement.getElementsByTagName(element.tagName)[0].childNodes[0].data)]
+            [Math.round(parseFloat(latestDateElement.getElementsByTagName(element.tagName)[0].childNodes[0].data) * 100)/100]
         )
     );
 
@@ -66,9 +66,11 @@ function appendLatestYieldsToAllYields(latestYields, allYields) {
         console.log('previousYields.length: ' + previousYields.length);
         return false;
     }
+    console.log('Updating yields with the latest');
     latestYields.forEach((latestYield, i) => {
-        latestYield[1] = latestYield[0] - previousYields[i][0];
-        latestYield[2] = percentageChange(previousYields[i][0], latestYield[0]);
+        latestYield[1] = Math.round(latestYield[0] - previousYields[i][0] * 100) / 100.0;
+        const percentChange = percentageChange(previousYields[i][0], latestYield[0]);
+        latestYield[2] = isNaN(percentChange) ? NaN : Math.round(percentChange) / 100.0;
     });
 
     allYields.push(latestYields);
