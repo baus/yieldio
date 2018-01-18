@@ -56,6 +56,7 @@ function appendLatestYieldsToAllYields(latestYields, allYields) {
     const previousYields = allYields[allYields.length - 1];
 
     if (latestYields[0] <= allYields[allYields.length - 1][0]) {
+        console.log('Checked for updated yields, but didn\'t find any');
         return false;
     }
 
