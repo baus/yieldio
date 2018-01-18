@@ -7,12 +7,14 @@
         return;
     }
     const canvas = chart.canvas;
-    const context = canvas.getContext("2d");
+    const context = canvas.getContext('2d');
     context.setLineDash([3, 5]);
     context.beginPath();
     context.moveTo(x, 0);
     context.lineTo(x, canvas.scrollHeight);
-    context.strokeStyle = "black";
+    context.moveTo(0,y);
+    context.lineTo(canvas.scrollWidth,y);
+    context.strokeStyle = 'grey';
     context.stroke();
     context.closePath();
 }
@@ -29,6 +31,7 @@ function CrosshairPlugin(callback) {
         })[0];
         if (elem !== undefined) {
             this.callback(new Date(targetChart.config.data.datasets[0].data[elem._index].t), elem._index);
+            this.y = elem._view.y;
         }
     };
     this.afterDraw = function (targetChart) {
