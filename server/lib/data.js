@@ -71,7 +71,7 @@ function appendLatestYieldsToAllYields(latestYields, allYields) {
     latestYields.forEach((latestYield, i) => {
         latestYield[1] = Math.round((latestYield[0] - previousYields[i][0]) * 100) / 100.0;
         const percentChange = percentageChange(previousYields[i][0], latestYield[0]);
-        latestYield[2] = isNaN(percentChange) ? NaN : Math.round(percentChange * 100) / 100.0;
+        latestYield[2] = isNaN(percentChange) ? null : Math.round(percentChange * 100) / 100.0;
     });
 
     allYields.push(latestYields);
