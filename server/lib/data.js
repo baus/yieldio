@@ -69,9 +69,9 @@ function appendLatestYieldsToAllYields(latestYields, allYields) {
     }
     console.log('Updating yields with the latest');
     latestYields.forEach((latestYield, i) => {
-        latestYield[1] = Math.round(latestYield[0] - previousYields[i][0] * 100) / 100.0;
+        latestYield[1] = Math.round((latestYield[0] - previousYields[i][0]) * 100) / 100.0;
         const percentChange = percentageChange(previousYields[i][0], latestYield[0]);
-        latestYield[2] = isNaN(percentChange) ? NaN : Math.round(percentChange) / 100.0;
+        latestYield[2] = isNaN(percentChange) ? NaN : Math.round(percentChange * 100) / 100.0;
     });
 
     allYields.push(latestYields);
@@ -117,7 +117,7 @@ loadYields((err, data) => {
     if (err) {
         console.log(err);
     } else {
-        console.log("loaded all yields");
+        console.log('loaded all yields');
         exports.YieldSpread = data;
         setInterval(fetchAndUpdateYields, 1000 * 60 * 5, exports.YieldSpread, yieldsUpdatedCallback);
     }
