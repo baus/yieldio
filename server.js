@@ -20,7 +20,8 @@ if ('development' === config.env) {
 }
 
 // enable CORS for all requests
-app.use(cors);
+app.use(cors());
+app.options('*', cors());
 
 // Compress all responses
 app.use(compression());
