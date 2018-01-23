@@ -2,6 +2,7 @@ const express = require('express');
 const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const compression = require('compression');
+const cors = require('cors');
 const config = require('./server/lib/config/config');
 const data = require('./server/lib/data');
 const twitter = require('./server/lib/twitter');
@@ -17,6 +18,9 @@ if ('development' === config.env) {
         publicPath: webpackConfig.output.publicPath
     }));
 }
+
+// enable CORS for all requests
+app.use(cors);
 
 // Compress all responses
 app.use(compression());

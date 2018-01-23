@@ -33,6 +33,7 @@
     "compression": "^1.7.1",
     "connect-flash": "^0.1.1",
     "connect-livereload": "^0.6.0",
+    "cors": "^2.8.4",
     "express": "^4.15.5",
     "file-loader": "^1.1.5",
     "jquery": "^3.2.1",
