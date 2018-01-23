@@ -138,3 +138,7 @@ p.scale-trigger {
 .panel-body {
     position: relative;
 }
+
+.heading {
+    margin-bottom: -20px;
+}

@@ -35,7 +35,7 @@ class App extends React.Component {
         const durationInMonths = this.state.durationInMonths;
         return (
             <div className="container-fluid">
-                <div className="row">
+                <div className="row heading">
                     <div className="col-md-12"><span className="brand">yield.IO</span>
                         <span> bond charts updated daily</span>
                     </div>
