@@ -26,7 +26,7 @@ function CrosshairPlugin(callback) {
     this.afterEvent = function (targetChart, e) {
         this.x = e.x;
         this.y = e.y;
-        let elem = targetChart.getElementsAtEventForMode(e, 'x', {
+        var elem = targetChart.getElementsAtEventForMode(e, 'x', {
             intersect: false
         })[0];
         if (elem !== undefined) {
