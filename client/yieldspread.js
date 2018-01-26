@@ -83,6 +83,7 @@ class YieldSpread extends React.Component {
                     }]
                 },
                 options: {
+                    maintainAspectRatio: false,
                     hover: {
                         intersect: false,
                         mode: 'index'

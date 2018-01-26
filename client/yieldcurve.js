@@ -16,7 +16,9 @@ class YieldCurve extends React.Component {
 
         return (
             <Panel loading={!this.props.yieldsForDate} heading={heading}>
-                <canvas ref="chart"></canvas>
+                <div style={{height: '275px'}}>
+                    <canvas ref="chart" />
+                </div>
             </Panel>
         )
 
@@ -76,6 +78,7 @@ class YieldCurve extends React.Component {
                     ]
                 },
                 options: {
+                    maintainAspectRatio: false,
                     legend: {display: false},
                     title: {
                         display: false,

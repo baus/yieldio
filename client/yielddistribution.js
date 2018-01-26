@@ -43,14 +43,17 @@ class YieldDistribution extends React.Component {
         const heading = 'Distribution of % change in ' + data.getDurationLabel(this.props.durationInMonths) + ' treasury bonds';
         return (
             <Panel loading={!this.props.allYields} heading={heading}>
-                <canvas ref="chart"></canvas>
+                <div style={{height: '200px'}}>
+                    <canvas ref="chart"/>
+                </div>
                 <div>
                     <p className="scale-trigger">
                         <input type="checkbox" checked={this.state.limitDurationsTo95th}
-                               onChange={this.limitDurations.bind(this)} />
+                               onChange={this.limitDurations.bind(this)}/>
                         <label>&nbsp;Limit to 95th percentile</label>
                     </p>
                 </div>
+
             </Panel>
         )
     }
@@ -91,6 +94,8 @@ class YieldDistribution extends React.Component {
                     }]
                 },
                 options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
                     legend: {display: false},
                     title: {
                         display: false,
