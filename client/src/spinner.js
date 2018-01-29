@@ -1,5 +1,5 @@
 import React from 'react';
-import Spinner from 'spin.js';
+import {Spinner} from 'spin.js';
 
 class ReactSpinner extends React.Component {
 

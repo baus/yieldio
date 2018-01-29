@@ -1,6 +1,7 @@
 import React from 'react';
 import Panel from './panel';
 import util from './util.js';
+import Chart from 'chart.js';
 import * as data from './data.js';
 
 class YieldDistribution extends React.Component {

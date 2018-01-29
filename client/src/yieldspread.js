@@ -1,6 +1,7 @@
 import React from 'react';
 import Spinner from './spinner';
 import * as data from './data';
+import Chart from 'chart.js';
 import DurationDropdown from './durationdropdown';
 
 

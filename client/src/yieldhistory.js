@@ -3,8 +3,8 @@ import Spinner from './spinner';
 import {Button} from 'reactstrap';
 import DurationDropdown from './durationdropdown';
 import CrosshairPlugin from './plugin.crosshair';
+import Chart from 'chart.js';
 import * as data from './data';
-
 
 
 const YieldHistoryPanel = props => {
