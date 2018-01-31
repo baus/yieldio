@@ -1,9 +1,11 @@
 const https = require('https');
-const fs = require('fs');
 const config = require('./config/config');
 const DOMParser = require('xmldom').DOMParser;
+const AWS = require('aws-sdk');
+AWS.config.update({region: 'us-west-2'});
+var cloudfront = new AWS.CloudFront();
+const s3 = new AWS.S3();
 
-const ALL_YIELDS_FILE = __dirname + '/../data/allyieldsarray.json';
 let yieldsUpdatedCallback;
 
 exports.YieldSpread = [];
@@ -40,7 +42,7 @@ function parseYields(yieldXML) {
     yields.push(date.getTime());
     YIELD_ELEMENTS.forEach(element =>
         yields.push(
-            [Math.round(parseFloat(latestDateElement.getElementsByTagName(element.tagName)[0].childNodes[0].data) * 100)/100]
+            [Math.round(parseFloat(latestDateElement.getElementsByTagName(element.tagName)[0].childNodes[0].data) * 100) / 100]
         )
     );
 
@@ -79,15 +81,19 @@ function appendLatestYieldsToAllYields(latestYields, allYields) {
 }
 
 function loadYields(callback) {
-    fs.readFile(ALL_YIELDS_FILE, (err, data) => {
+    const params = {
+        Bucket: 'yield.io',
+        Key: 'api/allYields.json'
+    };
+    s3.getObject(params, function (err, data) {
         if (err) {
             callback(err);
-        } else {
-            callback(null, JSON.parse(data));
+        }
+        else {
+            callback(null, JSON.parse(data.Body.toString('utf-8')));
         }
     });
 }
-
 
 function fetchAndUpdateYields(allYields, callback) {
     let yieldXML = "";
@@ -95,17 +101,42 @@ function fetchAndUpdateYields(allYields, callback) {
         res.setEncoding('utf8');
         res.on('data', chunk => yieldXML += chunk);
         res.on('end', () => {
-            if (appendLatestYieldsToAllYields(parseYields(yieldXML), allYields)) {
-                // TODO: copy the old file to a temp file in case
-                //       there is an error writing the new file.
-                fs.writeFile(ALL_YIELDS_FILE, JSON.stringify(allYields), function (err) {
-                    if (err) {
-                        callback(err);
-                    }
-                    callback(undefined, exports.YieldSpread);
-                });
+                if (appendLatestYieldsToAllYields(parseYields(yieldXML), allYields)) {
+                    // TODO: copy the old file to a temp file in case
+                    //       there is an error writing the new file.
+                    const params = {
+                        Bucket: 'yield.io',
+                        Key: 'api/allYields.json',
+                        Body: JSON.stringify(allYields),
+                        ACL: 'public-read'
+                    };
+
+                    s3.upload(params, function (err) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            // Parameters for a invalidation
+                            var params = {
+                                DistributionId: 'E3OMDZWH4SO160',
+                                InvalidationBatch: {
+                                    CallerReference: '' + new Date().getTime(),
+                                    Paths: {
+                                        Quantity: 1,
+                                        Items: ['/*']
+                                    }
+                                }
+                            };
+                            // Invalidate
+                            cloudfront.createInvalidation(params, function (err, data) {
+                                if(err) {
+                                    console.log('Failed to invalidate CloudFront: ' + err);
+                                }
+                            });
+                        }
+                    });
+                }
             }
-        });
+        );
     });
     req.on('error', err => {
         callback(err);
@@ -113,15 +144,13 @@ function fetchAndUpdateYields(allYields, callback) {
 }
 
 
-loadYields((err, data) => {
+exports.updateYields = () => loadYields((err, data) => {
     if (err) {
         console.log(err);
     } else {
         console.log('loaded all yields');
         exports.YieldSpread = data;
-        setInterval(fetchAndUpdateYields, 1000 * 60 * 5, exports.YieldSpread, yieldsUpdatedCallback);
+        fetchAndUpdateYields(exports.YieldSpread, yieldsUpdatedCallback);
     }
 });
 
-
-exports.loadYields = loadYields;
