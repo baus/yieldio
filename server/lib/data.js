@@ -111,11 +111,14 @@ function fetchAndUpdateYields(allYields, callback) {
                         ACL: 'public-read'
                     };
 
+
                     s3.upload(params, function (err) {
                         if (err) {
                             console.log(err);
+                            callback(err);
                         } else {
-                            // Parameters for a invalidation
+
+                            // Invalidate Cloudfront after updating S3
                             var params = {
                                 DistributionId: 'E3OMDZWH4SO160',
                                 InvalidationBatch: {
@@ -129,7 +132,10 @@ function fetchAndUpdateYields(allYields, callback) {
                             // Invalidate
                             cloudfront.createInvalidation(params, function (err, data) {
                                 if(err) {
+                                    callback(err);
                                     console.log('Failed to invalidate CloudFront: ' + err);
+                                } else {
+                                    callback(undefined, exports.YieldSpread);
                                 }
                             });
                         }
