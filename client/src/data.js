@@ -42,7 +42,7 @@ export function getShortDurationLabel(durationInMonths) {
 }
 
 export function getAllYields(callback) {
-    fetch('http://yield.io/api/allYields.json').then(response => {
+    fetch('https://yield.io/api/allYields.json').then(response => {
         return response.json();
     }).then(json=>{
         allYields = json;
