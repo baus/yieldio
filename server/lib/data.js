@@ -4,7 +4,7 @@ const DOMParser = require('xmldom').DOMParser;
 const AWS = require('aws-sdk');
 const util = require('util');
 AWS.config.update({region: 'us-west-2'});
-var cloudfront = new AWS.CloudFront();
+const cloudfront = new AWS.CloudFront();
 const s3 = new AWS.S3();
 
 let yieldsUpdatedCallback;
@@ -79,7 +79,7 @@ function loadYields(callback) {
         Bucket: 'yield.io',
         Key: 'api/allYields.json'
     };
-    s3.getObject(params, function (err, data) {
+    s3.getObject(params, (err, data) => {
         if (err) {
             callback(err);
         }
@@ -91,7 +91,7 @@ function loadYields(callback) {
 
 function fetchAndUpdateYields(allYields, callback) {
     let yieldXML = "";
-    const req = https.get(config.bondYields.url, function (res) {
+    const req = https.get(config.bondYields.url, (res) => {
         res.setEncoding('utf8');
         res.on('data', chunk => yieldXML += chunk);
         res.on('end', () => {
@@ -106,14 +106,14 @@ function fetchAndUpdateYields(allYields, callback) {
                     };
 
 
-                    s3.upload(params, function (err) {
+                    s3.upload(params, (err) => {
                         if (err) {
                             console.log(err);
-                            callback(err);
+                            return callback(err);
                         } else {
 
                             // Invalidate Cloudfront after updating S3
-                            var params = {
+                            const params = {
                                 DistributionId: 'E3OMDZWH4SO160',
                                 InvalidationBatch: {
                                     CallerReference: '' + new Date().getTime(),
@@ -124,12 +124,13 @@ function fetchAndUpdateYields(allYields, callback) {
                                 }
                             };
                             // Invalidate
-                            cloudfront.createInvalidation(params, function (err, data) {
+                            cloudfront.createInvalidation(params, (err, data) => {
                                 if(err) {
-                                    callback(err);
                                     console.log('Failed to invalidate CloudFront: ' + err);
+                                    return callback(err);
+
                                 } else {
-                                    callback(undefined, exports.YieldSpread);
+                                    return callback(undefined, exports.YieldSpread);
                                 }
                             });
                         }
