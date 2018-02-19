@@ -4,12 +4,7 @@ const util = require('./util');
 const twitterConfig = require('./config/twitteraccesstoken.json');
 
 exports.tweetYields = function (allYields) {
-    const twitter = new Ntwitter({
-        consumer_key: twitterConfig.consumerKey,
-        consumer_secret: twitterConfig.consumerSecret,
-        access_token_key: twitterConfig.accessTokenKey,
-        access_token_secret: twitterConfig.accessTokenSecret
-    });
+    const twitter = new Ntwitter(twitterConfig);
     let tweet = config.twitter.yieldUpdateTweet;
     const current10yYield = allYields[allYields.length - 1][9][0];
     const previous10yYield = allYields[allYields.length - 2][9][0];
