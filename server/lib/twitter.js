@@ -1,21 +1,7 @@
 const Ntwitter  = require('ntwitter');
 const config = require('./config/config');
-const fs = require('fs');
 const util = require('./util');
-const TWITTER_ACCESS_TOKEN_FILE = __dirname + '/../lib/config/twitteraccesstoken.json';
-let twitterConfig = {};
-
-
-function loadTwitterAccessToken () {
-    fs.readFile(TWITTER_ACCESS_TOKEN_FILE, function (err, data) {
-        if (err) {
-            console.log("failed to open twitter access token file: " + err);
-        } else {
-            twitterConfig = JSON.parse(data);
-            console.log("loaded twitter access token");
-        }
-    });
-};
+const twitterConfig = require('./config/twitteraccesstoken.json');
 
 exports.tweetYields = function (allYields) {
     const twitter = new Ntwitter({
@@ -46,5 +32,4 @@ exports.tweetYields = function (allYields) {
     });
 };
 
-loadTwitterAccessToken();
 
