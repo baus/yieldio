@@ -2,6 +2,7 @@ const https = require('https');
 const config = require('./config/config');
 const DOMParser = require('xmldom').DOMParser;
 const AWS = require('aws-sdk');
+const util = require('util');
 AWS.config.update({region: 'us-west-2'});
 var cloudfront = new AWS.CloudFront();
 const s3 = new AWS.S3();
@@ -13,13 +14,6 @@ exports.onYieldsUpdated = function (callback) {
     yieldsUpdatedCallback = callback;
 };
 
-/** this should be moved into a utility module **/
-function percentageChange(oldValue, newValue) {
-    if (oldValue === 0.0) {
-        return NaN;
-    }
-    return ((newValue - oldValue) / oldValue) * 100.0;
-}
 
 function parseYields(yieldXML) {
     const YIELD_ELEMENTS = [{duration: 1, tagName: "BC_1MONTH"}, {duration: 3, tagName: "BC_3MONTH"},
@@ -72,7 +66,7 @@ function appendLatestYieldsToAllYields(latestYields, allYields) {
     console.log('Updating yields with the latest');
     latestYields.forEach((latestYield, i) => {
         latestYield[1] = Math.round((latestYield[0] - previousYields[i][0]) * 100) / 100.0;
-        const percentChange = percentageChange(previousYields[i][0], latestYield[0]);
+        const percentChange = util.percentageChange(previousYields[i][0], latestYield[0]);
         latestYield[2] = isNaN(percentChange) ? null : Math.round(percentChange * 100) / 100.0;
     });
 

@@ -1,16 +1,9 @@
 const Ntwitter  = require('ntwitter');
 const config = require('./config/config');
 const fs = require('fs');
-
+const util = require('./util');
 const TWITTER_ACCESS_TOKEN_FILE = __dirname + '/../lib/config/twitteraccesstoken.json';
 let twitterConfig = {};
-
-function percentageChange(oldValue, newValue) {
-    if (oldValue === 0.0) {
-        return NaN;
-    }
-    return ((newValue - oldValue) / oldValue) * 100.0;
-};
 
 
 function loadTwitterAccessToken () {
@@ -43,7 +36,7 @@ exports.tweetYields = function (allYields) {
     }
     tweet = tweet.replace("{1}", Math.floor(current10yYield * 100 - previous10yYield * 100).toString())
         .replace("{2}", current10yYield).toString()
-        .replace("{3}", percentageChange(previous10yYield, current10yYield).toFixed(2));
+        .replace("{3}", util.percentageChange(previous10yYield, current10yYield).toFixed(2));
     twitter.updateStatus(tweet, err => {
         if (!err) {
             console.log("updated twitter");
