@@ -2,7 +2,7 @@ const https = require('https');
 const config = require('./config/config');
 const DOMParser = require('xmldom').DOMParser;
 const AWS = require('aws-sdk');
-const util = require('util');
+const util = require('./util');
 AWS.config.update({region: 'us-west-2'});
 const cloudfront = new AWS.CloudFront();
 const s3 = new AWS.S3();
