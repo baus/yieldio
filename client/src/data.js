@@ -34,11 +34,11 @@ export const SHORT_DURATION_LABELS = [
 ];
 
 export function getDurationLabel(durationInMonths) {
-    return LONG_DURATION_LABELS.find(item => item[0] === durationInMonths)[1]
+    return LONG_DURATION_LABELS.find(item => item[0] === durationInMonths)[1];
 }
 
 export function getShortDurationLabel(durationInMonths) {
-    return SHORT_DURATION_LABELS.find(item => item[0] === durationInMonths)[1]
+    return SHORT_DURATION_LABELS.find(item => item[0] === durationInMonths)[1];
 }
 
 export function getAllYields(callback) {
