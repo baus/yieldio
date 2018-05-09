@@ -48,7 +48,6 @@ var bausutil = (function () {
 
             if (limitToPercentile !== 1.00) {
                 const percentile = predicate(dataCopy[Math.floor(limitToPercentile * dataCopy.length - 1)]);
-                console.log(percentile);
                 dataCopy = dataCopy.filter(x => predicate(x) <= percentile);
             }
 
