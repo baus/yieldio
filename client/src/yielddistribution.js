@@ -29,7 +29,7 @@ class YieldDistribution extends React.Component {
 
         return util.createDistribution(filteredYields,
             numBuckets,
-            limitTo95thPercentile,
+            limitTo95thPercentile?0.95:1.0,
             getPercentageChangeFromYields);
     }
 

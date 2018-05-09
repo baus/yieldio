@@ -7,8 +7,6 @@ Date.prototype.strftime = function (fmt) {
 
 var bausutil = (function () {
     'use strict';
-
-
     return {
         binarySearch: function (array, find, comparator) {
             // see: http://www.dweebd.com/javascript/binary-search-an-array-in-javascript/
@@ -30,27 +28,38 @@ var bausutil = (function () {
             return null;
         },
 
-        createDistribution: function (data, numBuckets, limitTo95thPercentile, predicate) {
+        /**
+         * Calculates the values required to draw a histogram based on the input array and the number of buckets.
+         * Tails can be removed by limiting the calculation to a specific percentile.
+         *
+         * @param data
+         * @param numBuckets
+         * @param limitTo95thPercentile
+         * @param predicate
+         * @returns {Array}
+         */
+        createDistribution: function (data, numBuckets, limitToPercentile = 1.00, predicate = x => x) {
             const buckets = [];
-            for (let i =  0; i < numBuckets; i++) {
+            for (let i = 0; i < numBuckets; i++) {
                 buckets.push([i, 0]);
             }
 
-            let dataCopy = data.sort((a,b)=>predicate(a) - predicate(b));
+            let dataCopy = data.sort((a, b) => predicate(a) - predicate(b));
 
-            if (limitTo95thPercentile) {
-                const percentile = predicate(dataCopy[Math.floor(0.95 * dataCopy.length)]);
-                dataCopy = dataCopy.filter( x => predicate(x) <= percentile);
+            if (limitToPercentile !== 1.00) {
+                const percentile = predicate(dataCopy[Math.floor(limitToPercentile * dataCopy.length - 1)]);
+                console.log(percentile);
+                dataCopy = dataCopy.filter(x => predicate(x) <= percentile);
             }
 
             const min = predicate(dataCopy[0]);
             const max = predicate(dataCopy[dataCopy.length - 1]);
-            const bucketSize = (max - min) / numBuckets === 0?1:(max - min) / numBuckets;
+            const bucketSize = (max - min) / numBuckets === 0 ? 1 : (max - min) / numBuckets;
             dataCopy.forEach(item => {
-                let bucketIndex = Math.floor((predicate(item) - min) / bucketSize) - 1;
+                let bucketIndex = Math.floor((predicate(item) - min) / bucketSize);
                 // for values that lie exactly on last bucket we need to subtract one
                 if (bucketIndex === numBuckets) {
-                   bucketIndex--;
+                    bucketIndex--;
                 }
                 buckets[bucketIndex][1]++;
             });
