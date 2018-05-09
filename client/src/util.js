@@ -46,11 +46,11 @@ var bausutil = (function () {
             const min = predicate(dataCopy[0]);
             const max = predicate(dataCopy[dataCopy.length - 1]);
             const bucketSize = (max - min) / numBuckets === 0?1:(max - min) / numBuckets;
-
             dataCopy.forEach(item => {
-                let bucketIndex = Math.floor((predicate(item) - min) / bucketSize);
+                let bucketIndex = Math.floor((predicate(item) - min) / bucketSize) - 1;
+                // for values that lie exactly on last bucket we need to subtract one
                 if (bucketIndex === numBuckets) {
-                    bucketIndex--;
+                   bucketIndex--;
                 }
                 buckets[bucketIndex][1]++;
             });

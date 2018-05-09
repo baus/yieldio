@@ -5,6 +5,7 @@ test('test distribution', () => {
   expect(util.default.createDistribution([0,0,0,0,0,0], 5, false, x=>x)).toEqual([[0,6],[1,0],[2,0],[3,0],[4,0]]);
   expect(util.default.createDistribution([1,1,1,1,1,1], 5, false, x=>x)).toEqual([[0,6],[1,0],[2,0],[3,0],[4,0]]);
   expect(util.default.createDistribution([1,1,1,1,1,1], 5, true, x=>x)).toEqual([[0,6],[1,0],[2,0],[3,0],[4,0]]);
+  expect(util.default.createDistribution([1,1,1,5,5,5], 5, false, x=>x)).toEqual([[0,3],[1,0],[2,0],[3,0],[4,3]]);
 
 });
 
