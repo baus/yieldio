@@ -39,12 +39,13 @@ var bausutil = (function () {
             let dataCopy = data.sort((a,b)=>predicate(a) - predicate(b));
 
             if (limitTo95thPercentile) {
-                dataCopy = dataCopy.slice(0, Math.floor(0.95 * dataCopy.length));
+                const percentile = predicate(dataCopy[Math.floor(0.95 * dataCopy.length)]);
+                dataCopy = dataCopy.filter( x => predicate(x) <= percentile);
             }
 
             const min = predicate(dataCopy[0]);
             const max = predicate(dataCopy[dataCopy.length - 1]);
-            const bucketSize = (max - min) / numBuckets;
+            const bucketSize = (max - min) / numBuckets === 0?1:(max - min) / numBuckets;
 
             dataCopy.forEach(item => {
                 let bucketIndex = Math.floor((predicate(item) - min) / bucketSize);
