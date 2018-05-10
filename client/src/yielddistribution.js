@@ -17,7 +17,7 @@ class YieldDistribution extends React.Component {
             const dateSlicedYields = yieldsForDay.slice(1);
             const value = dateSlicedYields[durationIndex][2];
             if (data.isNumber(value)) {
-                return Math.abs(value);
+                return value;
             }
             return value;
         };
@@ -29,7 +29,7 @@ class YieldDistribution extends React.Component {
 
         return createHistogram(filteredYields,
             numBuckets,
-            limitTo95thPercentile?0.95:1.0,
+            limitTo95thPercentile?0.05:0.0,
             getPercentageChangeFromYields);
     }
 
@@ -51,7 +51,7 @@ class YieldDistribution extends React.Component {
                     <p className="scale-trigger">
                         <input type="checkbox" checked={this.state.limitDurationsTo95th}
                                onChange={this.limitDurations.bind(this)}/>
-                        <label>&nbsp;Limit to 95th percentile</label>
+                        <label>&nbsp;Trim tails (5% right and left)</label>
                     </p>
                 </div>
 

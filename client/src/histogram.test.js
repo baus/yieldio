@@ -5,12 +5,12 @@ test('test histogram', () => {
     expect(histogram.default([1, 1, 1, 1, 1, 1], 5)).toEqual([[0, 6], [1, 0], [2, 0], [3, 0], [4, 0]]);
     expect(histogram.default([0, 0, 0, 0, 0, 0], 5)).toEqual([[0, 6], [1, 0], [2, 0], [3, 0], [4, 0]]);
     expect(histogram.default([1, 1, 1, 1, 1, 1], 5)).toEqual([[0, 6], [1, 0], [2, 0], [3, 0], [4, 0]]);
-    expect(histogram.default([1, 1, 1, 1, 1, 1], 5, .95)).toEqual([[0, 6], [1, 0], [2, 0], [3, 0], [4, 0]]);
+    expect(histogram.default([1, 1, 1, 1, 1, 1], 5, .05)).toEqual([[0, 6], [1, 0], [2, 0], [3, 0], [4, 0]]);
     expect(histogram.default([1, 1, 1, 5, 5, 5], 5)).toEqual([[0, 3], [1, 0], [2, 0], [3, 0], [4, 3]]);
-    expect(histogram.default([1, 1, 1, 1, 1, 2], 5, .6)).toEqual([[0, 5], [1, 0], [2, 0], [3, 0], [4, 0]]);
-    expect(histogram.default([1, 2, 3, 4, 5, 6], 3, .5)).toEqual([[0, 1], [1, 1], [2, 1]]);
-    expect(histogram.default([-1, 2, 3, 4, 5, 6], 3, .5)).toEqual([[0, 1], [1, 0], [2, 2]]);
-    expect(histogram.default([1, 1, 1, 2,2,2, 3, 3, 3], 3)).toEqual([[0, 3], [1, 3], [2, 3]]);
+    expect(histogram.default([1, 1, 1, 1, 1, 2], 5, .4)).toEqual([[0, 5], [1, 0], [2, 0], [3, 0], [4, 0]]);
+    expect(histogram.default([1, 2, 3, 4, 5, 6], 3, .3)).toEqual( [[0, 1], [1, 1], [2, 1]]);
+    expect(histogram.default([-1, 2, 3, 4, 5, 6], 3, .2)).toEqual( [[0, 1], [1, 1], [2, 1]]);
+    expect(histogram.default([1, 1, 1, 2,2,2, 3, 3, 3],  3)).toEqual([[0, 3], [1, 3], [2, 3]]);
     expect(histogram.default([4, 5, 6, 8, 9, 10, 16, 17, 18, 23, 26, 27, 30, 31, 33, 34, 36,
         39, 40, 41, 48, 49, 50, 51, 52, 54, 56, 60, 61, 67, 69, 70, 71, 73, 75, 78, 80, 84, 92, 93, 95, 97, 99,
         101, 103, 105, 106, 111, 112, 114, 116, 118, 121, 123, 128, 130, 131, 132, 133, 137, 138, 139, 140,

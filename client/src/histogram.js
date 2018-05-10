@@ -6,12 +6,12 @@
  *
  * @param data
  * @param numBuckets
- * @param limitToPercentile
- * @param predicate which is used to extract elements from input data. This is used to prevent reshaping the data
+ * @param trimTailPercentage removes the right and left tails from the distribution
+ * @param predicate function used to extract elements from input data. This is provided to prevent reshaping the data
  * @returns Two dimensional array. First dimension is the index of the bucket, and the second index
  *          is the count. This allows for direct import into ChartJS without having to change the data shape
  */
-function calculateHistogram(data, numBuckets, limitToPercentile = 1.00, predicate = x => x) {
+function calculateHistogram(data, numBuckets, trimTailPercentage = 0.00, predicate = x => x) {
     const buckets = [];
     for (let i = 0; i < numBuckets; i++) {
         buckets.push([i, 0]);
@@ -19,10 +19,12 @@ function calculateHistogram(data, numBuckets, limitToPercentile = 1.00, predicat
 
     let dataCopy = data.sort((a, b) => predicate(a) - predicate(b));
 
-    if (limitToPercentile !== 1.00) {
-        const percentile = predicate(dataCopy[Math.floor(limitToPercentile * dataCopy.length - 1)]);
-        // This could be moved to forEach loop below to eliminate one linear search
-        dataCopy = dataCopy.filter(x => predicate(x) <= percentile);
+    if (trimTailPercentage !== 0.00) {
+
+        const rightPercentile = predicate(dataCopy[Math.floor((1.0 - trimTailPercentage) * dataCopy.length - 1)]);
+        const leftPercentile = predicate(dataCopy[Math.ceil(trimTailPercentage * dataCopy.length - 1)]);
+        dataCopy = dataCopy.filter(x => predicate(x) <= rightPercentile && predicate(x) >= leftPercentile);
+
     }
 
     const min = predicate(dataCopy[0]);
@@ -38,6 +40,6 @@ function calculateHistogram(data, numBuckets, limitToPercentile = 1.00, predicat
     });
 
     return buckets;
-};
+}
 
 export default calculateHistogram;
