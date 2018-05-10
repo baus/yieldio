@@ -2,8 +2,6 @@
  * Calculates the values required to draw a histogram based on the input array and the number of buckets.
  * Tails can be removed by limiting the calculation to a specific percentile.
  *
- * Note: should probably updated to eliminate tails on both sides of the distribution.
- *
  * @param data
  * @param numBuckets
  * @param trimTailPercentage removes the right and left tails from the distribution
