@@ -32,11 +32,14 @@ var bausutil = (function () {
          * Calculates the values required to draw a histogram based on the input array and the number of buckets.
          * Tails can be removed by limiting the calculation to a specific percentile.
          *
+         * Note: should probably updated to eliminate tails on both sides of the distribution.
+         *
          * @param data
          * @param numBuckets
-         * @param limitTo95thPercentile
-         * @param predicate
-         * @returns {Array}
+         * @param limitToPercentile
+         * @param predicate which is used to extract elements from input data. This is used to prevent reshaping the data
+         * @returns Two dimensional array. First dimension is the index of the bucket, and the second index
+         *          is the count. This allows for direct import into ChartJS without having to change the data shape
          */
         createDistribution: function (data, numBuckets, limitToPercentile = 1.00, predicate = x => x) {
             const buckets = [];
