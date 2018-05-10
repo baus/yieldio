@@ -1,8 +1,8 @@
 import React from 'react';
-import Panel from './panel';
-import util from './util.js';
 import Chart from 'chart.js';
-import * as data from './data.js';
+import Panel from './panel';
+import * as data from './data';
+import createHistogram from './histogram';
 
 class YieldDistribution extends React.Component {
     constructor(props) {
@@ -27,7 +27,7 @@ class YieldDistribution extends React.Component {
             return data.isNumber(value);
         });
 
-        return util.createDistribution(filteredYields,
+        return createHistogram(filteredYields,
             numBuckets,
             limitTo95thPercentile?0.95:1.0,
             getPercentageChangeFromYields);
