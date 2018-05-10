@@ -4,6 +4,8 @@ import Panel from './panel';
 import * as data from './data';
 import createHistogram from './histogram';
 
+const NUM_HISTOGRAM_BUCKETS = 20;
+
 class YieldDistribution extends React.Component {
     constructor(props) {
         super(props);
@@ -70,7 +72,7 @@ class YieldDistribution extends React.Component {
         const durationInMonths = this.props.durationInMonths;
         const distribution = this.createPercentageChangeDistribution(this.props.allYields,
             durationInMonths,
-            20,
+            NUM_HISTOGRAM_BUCKETS,
             this.state.limitDurationsTo95th);
         const data = [];
         const labels = [];
