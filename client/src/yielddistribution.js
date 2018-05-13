@@ -2,9 +2,9 @@ import React from 'react';
 import Chart from 'chart.js';
 import Panel from './panel';
 import * as data from './data';
-import createHistogram from './histogram';
+import createHistogram from 'compute-histogram';
 
-const NUM_HISTOGRAM_BUCKETS = 20;
+const NUM_HISTOGRAM_BUCKETS = 30;
 
 class YieldDistribution extends React.Component {
     constructor(props) {
@@ -29,10 +29,10 @@ class YieldDistribution extends React.Component {
             return data.isNumber(value);
         });
 
-        return createHistogram(filteredYields,
+        const percentageChange = filteredYields.map(getPercentageChangeFromYields);
+        return createHistogram(percentageChange,
             numBuckets,
-            limitTo95thPercentile?0.05:0.0,
-            getPercentageChangeFromYields);
+            limitTo95thPercentile?0.05:0.0);
     }
 
 
