@@ -43,7 +43,7 @@ class YieldDistribution extends React.Component {
     }
 
     render() {
-        const heading = 'Distribution of % change in ' + data.getDurationLabel(this.props.durationInMonths) + ' treasury bonds';
+        const heading = 'Distribution of % change in ' + data.getDurationLabel(this.props.durationInMonths) + ' Treasury bond yields';
         return (
             <Panel loading={!this.props.allYields} heading={heading}>
                 <div style={{height: '200px'}}>
