@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "binary-search": "^1.3.3",
     "bootstrap": "^4.0.0",
     "chart.js": "^2.7.1",
     "compute-histogram": "^0.9.1",

@@ -1,4 +1,4 @@
-import util from './util.js';
+import binarySearch from 'binary-search';
 
 const yieldsForDurationCache = [];
 
@@ -76,7 +76,7 @@ export function getYieldSpreads(duration1InMonths, duration2InMonths) {
 }
 
 export function getYieldsForDate(date) {
-    return allYields[util.binarySearch(allYields, date.getTime(), function (a, b) {
+    return allYields[binarySearch(allYields, date.getTime(), (a, b) => {
         if (a[0] > b) {
             return 1;
         }
