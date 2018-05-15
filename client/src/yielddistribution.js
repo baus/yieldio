@@ -86,7 +86,7 @@ class YieldDistribution extends React.Component {
             this.chart.update();
         }
         else {
-            this.chart = new Chart(this.refs.chart, {
+            this.chart = Chart.Bar(this.refs.chart, {
                 type: 'bar',
                 data: {
                     labels: labels,
@@ -97,9 +97,19 @@ class YieldDistribution extends React.Component {
                     }]
                 },
                 options: {
+                    scales: {
+                        xAxes: [{
+                            categoryPercentage: 1.0,
+                            // This is required for the bars to 'touch' each other to
+                            // look more like bins in a histogram
+                            barPercentage: 1.03
+                        }]
+                    },
                     maintainAspectRatio: false,
                     responsive: true,
-                    legend: {display: false},
+                    legend: {
+                        display: false
+                    },
                     title: {
                         display: false,
                     }
