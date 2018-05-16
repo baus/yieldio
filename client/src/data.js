@@ -33,6 +33,10 @@ export const SHORT_DURATION_LABELS = [
     [360, '30y']
 ];
 
+export function isNumber(number) {
+    return number !== null && !isNaN(number);
+}
+
 export function getDurationLabel(durationInMonths) {
     return LONG_DURATION_LABELS.find(item => item[0] === durationInMonths)[1];
 }
@@ -85,10 +89,6 @@ export function getYieldsForDate(date) {
         }
         return -1;
     })].slice(1);
-}
-
-export function isNumber(number) {
-    return number !== null && !isNaN(number);
 }
 
 
