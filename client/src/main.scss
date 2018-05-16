@@ -1,14 +1,8 @@
-@import "bootstrapcustom.scss";
-@import "../node_modules/bootstrap/scss/bootstrap";
-@import "../node_modules/bootstrap/scss/_variables.scss";
-@import "../node_modules/bootstrap/scss/_functions.scss";
-@import "../node_modules/bootstrap/scss/mixins/_breakpoints.scss";
+// must override Bootstrap variables before importing the Bootstrap scss
+$font-size-base: 0.875rem;
 
-/**@import "~bootstrap/scss/bootstrap";
-@import "~bootstrap/scss/_variables.scss";
-@import "~bootstrap/scss/_functions.scss";
-@import "~bootstrap/scss/mixins/_breakpoints.scss";
-**/
+@import "../node_modules/bootstrap/scss/bootstrap";
+
 
 @include media-breakpoint-up(xs) {
   .panel-heading {
@@ -26,4 +20,88 @@
   .panel-heading {
     font-size: 23px;
   }
+}
+
+body {
+  font-weight: 300;
+  color: #7D797B;
+  padding-bottom: 10px;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.heading {
+  margin-bottom: -10px;
+}
+
+h3 {
+  font-weight: 300;
+}
+
+.brand {
+  font-family: sans-serif;
+  font-size: 32px;
+  font-weight: 100;
+  color: #686868;
+}
+
+.panel {
+  padding: 10px;
+  background: #ebeaea;
+  margin: 5px;
+  border-radius: 10px;
+}
+
+.panel-body {
+  padding: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  position: relative;
+}
+
+.panel-heading {
+  padding: 0;
+  color: #7D797B;
+  margin-top: 0;
+  font-weight: 300;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+p.inflation-rate {
+  margin-bottom: 15px;
+  color: #D51010;
+  font-weight: 500;
+  font-size: 13px;
+}
+
+.negative {
+  color: #d51010
+}
+
+.positive {
+  color: #10d522
+}
+
+.neutral {
+  color: #848484
+}
+
+p.scale-trigger {
+  margin-bottom: 0;
+  margin-top: 10px;
+}
+
+.the-number {
+  font-size: 80px;
+  font-weight: 100;
+}
+
+.callout {
+  padding-top: 40px;
+  margin-left: 0;
+  padding-left: 0;
 }

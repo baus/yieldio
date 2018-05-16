@@ -35,12 +35,12 @@ class App extends React.Component {
         const durationInMonths = this.state.durationInMonths;
         return (
             <div className="container-fluid">
-                <div className="row heading">
+                <div className="row heading no-gutters">
                     <div className="col-md-12"><span className="brand">yield.IO</span>
                         <span> bond charts updated daily</span>
                     </div>
                 </div>
-                <div className="row">
+                <div className="row no-gutters">
                     <div className="col-md-12">
                         <YieldHistory allYields={data.allYields}
                                       onDurationChange={this.onDurationChange.bind(this)}
@@ -48,7 +48,7 @@ class App extends React.Component {
                         />
                     </div>
                 </div>
-                <div className="row">
+                <div className="row no-gutters">
                     <div className="col-md-5">
                         <YieldCallout yieldsForDate={yieldsForDate}
                                       currentDate={this.state.date}
