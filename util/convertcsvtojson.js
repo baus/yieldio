@@ -1,26 +1,29 @@
-var fs = require('fs');
-var babyparse = require('babyparse');
-
-
-parsed = babyparse.parseFiles('yields.csv');
-
-rows = parsed.data;
 
 // Data from: https://www.treasury.gov/resource-center/data-chart-center/interest-rates/Pages/TextView.aspx?data=yield
+const fs = require('fs');
+const babyparse = require('babyparse');
 
-var outArray = [];
-var prevArray = [];
-var curArray = [];
-for (var i = 0; i < 11; ++i) {
-    prevArray.push(NaN);
+
+const parsed = babyparse.parseFiles('yields.csv');
+const rows = parsed.data;
+
+function isNumber(number) {
+    return number !== null && !isNaN(number);
+}
+
+const outArray = [];
+let prevArray = [];
+let curArray = [];
+for (let i = 0; i < 11; ++i) {
+    prevArray.push(null);
 }
 for (let row of rows) {
-    var date = new Date(row[0]);
+    let date = new Date(row[0]);
     date = new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000);
-    var dateArray = [];
+    const dateArray = [];
     dateArray.push(date.getTime());
-    i = 0;
-    for (var col of row.slice(1, row.length)) {
+    let i = 0;
+    for (let col of row.slice(1, row.length)) {
         let yieldArray = [];
         if (col === 'N/A') {
             yieldArray.push(null);
@@ -30,7 +33,7 @@ for (let row of rows) {
             yieldArray.push(parseFloat(col));
             curArray.push(parseFloat(col));
         }
-        if (!isNaN(prevArray[i]) && !isNaN(curArray[i])) {
+        if (isNumber(prevArray[i]) && isNumber(curArray[i])) {
             yieldArray.push(Number((curArray[i] - prevArray[i]).toFixed(2)));
             yieldArray.push(Number((((curArray[i] - prevArray[i]) / prevArray[i]) * 100.0).toFixed(2)));
         }
@@ -46,7 +49,7 @@ for (let row of rows) {
     outArray.push(dateArray);
 }
 
-fs.writeFile("yields.json", JSON.stringify(outArray), function (err) {
+fs.writeFile("yields.json", JSON.stringify(outArray), (err) => {
     if (err) {
         return console.log(err);
     }
