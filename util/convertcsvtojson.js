@@ -23,8 +23,8 @@ for (let row of rows) {
     for (var col of row.slice(1, row.length)) {
         let yieldArray = [];
         if (col === 'N/A') {
-            yieldArray.push('NaN');
-            curArray.push(NaN);
+            yieldArray.push(null);
+            curArray.push(null);
         }
         else {
             yieldArray.push(parseFloat(col));
@@ -35,8 +35,8 @@ for (let row of rows) {
             yieldArray.push(Number((((curArray[i] - prevArray[i]) / prevArray[i]) * 100.0).toFixed(2)));
         }
         else {
-            yieldArray.push('NaN');
-            yieldArray.push('NaN');
+            yieldArray.push(null);
+            yieldArray.push(null);
         }
         dateArray.push(yieldArray);
         ++i;
