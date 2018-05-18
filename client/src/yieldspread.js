@@ -29,7 +29,8 @@ class YieldSpread extends React.Component {
         this.chart = null;
         this.state = {
             duration1: 360,
-            duration2: 120
+            duration2: 120,
+            chart: null
         };
     }
 
@@ -56,69 +57,79 @@ class YieldSpread extends React.Component {
                               heading={heading}
                               onDuration1Change={this.onDuration1Change.bind(this)}
                               onDuration2Change={this.onDuration2Change.bind(this)}>
-                <canvas ref="chart"></canvas>
+                <canvas ref="chart"/>
             </YieldSpreadPanel>
         );
     }
 
-    componentDidUpdate() {
-        let yieldDuration1 = this.state.duration1;
-        let yieldDuration2 = this.state.duration2;
+    createChart() {
+        const spreads = data.getYieldSpreads(this.state.duration1, this.state.duration2);
 
-        const spreads = data.getYieldSpreads(yieldDuration1, yieldDuration2);
-        if (this.chart !== null) {
-            this.chart.data.datasets[0].data = spreads;
-            this.chart.update();
+        const chart = new Chart(this.refs.chart, {
+            type: 'line',
+
+            data: {
+                datasets: [{
+                    data: spreads,
+                    borderColor: '#4A87D0',
+                    borderWidth: '2',
+                    backgroundOpacity: '.3',
+                    backgroundColor: 'rgba(74,135,208, .5)'
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                hover: {
+                    intersect: false,
+                    mode: 'index'
+                },
+                tooltips: {
+                    enabled: false
+                },
+                legend: {
+                    display: false
+                },
+                elements: {
+                    point: {
+                        radius: 0
+                    }
+                },
+                scales: {
+                    xAxes: [{
+                        type: 'time',
+                        ticks: {
+                            autoSkip: true,
+                            maxTicksLimit: 20
+                        },
+                        time: {
+                            unit: 'year'
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            callback: value => value.toFixed(1) + '%'
+                        }
+                    }]
+                }
+            }
+        });
+        this.setState({chart: chart});
+    }
+
+    componentDidMount() {
+        if (!this.props.allYields) {
+            return;
+        }
+        this.createChart();
+    }
+
+    componentDidUpdate() {
+        if (this.state.chart !== null) {
+            this.state.chart.data.datasets[0].data = data.getYieldSpreads(this.state.duration1, this.state.duration2);
+            this.state.chart.update();
         }
         else {
-            this.chart = new Chart(this.refs.chart, {
-                type: 'line',
-
-                data: {
-                    datasets: [{
-                        data: spreads,
-                        borderColor: '#4A87D0',
-                        borderWidth: '2',
-                        backgroundOpacity: '.3',
-                        backgroundColor: 'rgba(74,135,208, .5)'
-                    }]
-                },
-                options: {
-                    maintainAspectRatio: false,
-                    hover: {
-                        intersect: false,
-                        mode: 'index'
-                    },
-                    tooltips: {
-                        enabled: false
-                    },
-                    legend: {
-                        display: false
-                    },
-                    elements: {
-                        point: {
-                            radius: 0
-                        }
-                    },
-                    scales: {
-                        xAxes: [{
-                            type: 'time',
-                            ticks: {
-                                autoSkip: true,
-                                maxTicksLimit: 20
-                            },
-                            time: {
-                                unit: 'year'
-                            }
-                        }],
-                        yAxes: [{
-                            ticks: {
-                                callback: value => value.toFixed(1) + '%'
-                            }
-                        }]
-                    }
-                }
-            });
+            this.createChart();
         }
     }
 }

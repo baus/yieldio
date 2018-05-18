@@ -8,6 +8,7 @@ import * as data from './data';
 class YieldCurve extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {chart: null};
         this.chart = null;
     }
 
@@ -15,26 +16,18 @@ class YieldCurve extends React.Component {
         const heading = 'Treasury bond yields as of ' + FormattedDate.format(this.props.currentDate);
 
         return (
-            <Panel loading={!this.props.yieldsForDate} heading={heading}>
+            <Panel loading={!this.props.yieldsForDate} heading={heading} onExpand={this.props.onExpand}
+                   onContract={this.props.onContract} icon={this.props.icon}>
                 <div style={{height: '275px'}}>
-                    <canvas ref="chart" />
+                    <canvas ref="chart"/>
                 </div>
             </Panel>
         )
 
     }
 
-    componentDidUpdate() {
-        if (!this.props.yieldsForDate) {
-            return;
-        }
-        let yieldData = this.props.yieldsForDate.map((currentYield, i) => {
-            if (typeof currentYield[0] === 'number') {
-                return {x: data.DURATIONS[i], y: currentYield[0]};
-            }
-        });
-
-
+    createChart() {
+        const yieldData = this.getYieldData();
         const xAxes = [{
             type: 'linear',
             display: true,
@@ -58,43 +51,64 @@ class YieldCurve extends React.Component {
                 callback: value => value.toFixed(1) + '%'
             }
         }];
-
-        if (this.chart) {
-            this.chart.data.datasets[0].data = yieldData;
-            this.chart.update(0);
-        } else {
-            this.chart = new Chart(this.refs.chart, {
-                type: 'line',
-                data: {
-                    datasets: [
-                        {
-                            data: yieldData,
-                            lineTension: 0,
-                            borderColor: '#4A87D0',
-                            borderWidth: '2',
-                            backgroundOpacity: '.3',
-                            backgroundColor: 'rgba(74,135,208, .5)'
-                        }
-                    ]
-                },
-                options: {
-                    maintainAspectRatio: false,
-                    legend: {display: false},
-                    title: {
-                        display: false,
-                    },
-                    elements: {
-                        point: {
-                            radius: 0
-                        }
-                    },
-                    scales: {
-                        xAxes: xAxes,
-                        yAxes: yAxes
+        const chart = new Chart(this.refs.chart, {
+            type: 'line',
+            data: {
+                datasets: [
+                    {
+                        data: yieldData,
+                        lineTension: 0,
+                        borderColor: '#4A87D0',
+                        borderWidth: '2',
+                        backgroundOpacity: '.3',
+                        backgroundColor: 'rgba(74,135,208, .5)'
                     }
+                ]
+            },
+            options: {
+                maintainAspectRatio: false,
+                legend: {display: false},
+                title: {
+                    display: false,
+                },
+                elements: {
+                    point: {
+                        radius: 0
+                    }
+                },
+                scales: {
+                    xAxes: xAxes,
+                    yAxes: yAxes
                 }
-            });
+            }
+        });
+        this.setState({chart: chart});
+    }
+
+    getYieldData() {
+        let yieldData = this.props.yieldsForDate.map((currentYield, i) => {
+            if (typeof currentYield[0] === 'number') {
+                return {x: data.DURATIONS[i], y: currentYield[0]};
+            }
+        });
+        return yieldData;
+    }
+
+    componentDidMount() {
+        if (!this.props.yieldsForDate) {
+            return;
         }
+        this.createChart();
+    }
+
+    componentDidUpdate() {
+        const chart = this.state.chart;
+        if (chart) {
+            chart.data.datasets[0].data = this.getYieldData();
+            chart.update(0);
+            return;
+        }
+        this.createChart();
     }
 }
 

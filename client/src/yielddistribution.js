@@ -10,7 +10,7 @@ class YieldDistribution extends React.Component {
     constructor(props) {
         super(props);
         this.chart = null;
-        this.state = {limitDurationsTo95th: true};
+        this.state = {limitDurationsTo95th: true, chart: null};
     }
 
     createPercentageChangeDistribution(allYields, durationInMonths, numBuckets, limitTo95thPercentile) {
@@ -65,57 +65,74 @@ class YieldDistribution extends React.Component {
         this.setState({limitDurationsTo95th: event.target.checked});
     }
 
-    componentDidUpdate() {
-        if (!this.props.allYields) {
-            return;
-        }
+
+    createChartDataAndLabels() {
+        const returnVal = {data:[], labels:[]};
         const durationInMonths = this.props.durationInMonths;
         const distribution = this.createPercentageChangeDistribution(this.props.allYields,
             durationInMonths,
             NUM_HISTOGRAM_BUCKETS,
             this.state.limitDurationsTo95th);
-        const data = [];
-        const labels = [];
         distribution.forEach(xyVal => {
-            data.push(xyVal[1]);
-            labels.push(xyVal[0] + 1);
+            returnVal.data.push(xyVal[1]);
+            returnVal.labels.push(xyVal[0] + 1);
         });
+        return returnVal;
+    }
 
-        if (this.chart !== null) {
-            this.chart.data.datasets[0].data = data;
-            this.chart.update();
-        }
-        else {
-            this.chart = Chart.Bar(this.refs.chart, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        backgroundOpacity: '.3',
-                        backgroundColor: 'rgba(74,135,208, .5)',
-                        data: data
+    createChart() {
+        const dataAndLabels = this.createChartDataAndLabels();
+        const chart = Chart.Bar(this.refs.chart, {
+            type: 'bar',
+            data: {
+                labels: dataAndLabels.labels,
+                datasets: [{
+                    backgroundOpacity: '.3',
+                    backgroundColor: 'rgba(74,135,208, .5)',
+                    data: dataAndLabels.data
+                }]
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                        categoryPercentage: 1.0,
+                        // This is required for the bars to 'touch' each other to
+                        // look more like bins in a histogram
+                        barPercentage: 1.03
                     }]
                 },
-                options: {
-                    scales: {
-                        xAxes: [{
-                            categoryPercentage: 1.0,
-                            // This is required for the bars to 'touch' each other to
-                            // look more like bins in a histogram
-                            barPercentage: 1.03
-                        }]
-                    },
-                    maintainAspectRatio: false,
-                    responsive: true,
-                    legend: {
-                        display: false
-                    },
-                    title: {
-                        display: false,
-                    }
+                maintainAspectRatio: false,
+                responsive: true,
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: false,
                 }
-            });
+            }
+        });
+        this.setState({chart: chart});
+    }
+
+    componentDidMount() {
+        if (!this.props.allYields) {
+            return;
         }
+        this.createChart();
+    }
+
+    componentDidUpdate() {
+        if (!this.props.allYields) {
+            return;
+        }
+        const dataAndLabels = this.createChartDataAndLabels();
+
+        if (this.state.chart !== null) {
+            this.state.chart.data.datasets[0].data = dataAndLabels.data;
+            this.state.chart.update();
+            return;
+        }
+        this.createChart();
     }
 }
 
