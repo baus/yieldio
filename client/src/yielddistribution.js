@@ -125,9 +125,8 @@ class YieldDistribution extends React.Component {
         if (!this.props.allYields) {
             return;
         }
-        const dataAndLabels = this.createChartDataAndLabels();
-
         if (this.state.chart !== null) {
+            const dataAndLabels = this.createChartDataAndLabels();
             this.state.chart.data.datasets[0].data = dataAndLabels.data;
             this.state.chart.update();
             return;
