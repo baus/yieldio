@@ -87,9 +87,10 @@ class YieldCurve extends React.Component {
     }
 
     getYieldData() {
-        let yieldData = this.props.yieldsForDate.map((currentYield, i) => {
-            if (typeof currentYield[0] === 'number') {
-                return {x: data.DURATIONS[i], y: currentYield[0]};
+        const yieldData = [];
+        this.props.yieldsForDate.forEach((currentYield, i) => {
+            if (data.isNumber(currentYield[0])) {
+                yieldData.push({x: data.DURATIONS[i], y: currentYield[0]});
             }
         });
         return yieldData;
