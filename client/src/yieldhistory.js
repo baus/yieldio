@@ -143,6 +143,7 @@ class YieldHistory extends React.Component {
                     }]
                 },
                 options: {
+                    animation:false,
                     maintainAspectRatio: false,
                     hover: {
                         intersect: false,

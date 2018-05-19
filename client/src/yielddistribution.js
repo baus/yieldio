@@ -95,6 +95,7 @@ class YieldDistribution extends React.Component {
                 }]
             },
             options: {
+                animation: false,
                 scales: {
                     xAxes: [{
                         categoryPercentage: 1.0,

@@ -66,6 +66,7 @@ class YieldCurve extends React.Component {
                 ]
             },
             options: {
+                animation: false,
                 maintainAspectRatio: false,
                 legend: {display: false},
                 title: {
