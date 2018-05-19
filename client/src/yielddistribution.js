@@ -1,8 +1,10 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import Chart from 'chart.js';
 import Panel from './panel';
 import * as data from './data';
 import createHistogram from 'compute-histogram';
+import {toggleTrimDistribution} from "./actions/distributionActions";
 
 const NUM_HISTOGRAM_BUCKETS = 30;
 
@@ -10,7 +12,7 @@ class YieldDistribution extends React.Component {
     constructor(props) {
         super(props);
         this.chart = null;
-        this.state = {limitDurationsTo95th: true, chart: null};
+        this.state = {chart: null};
     }
 
     createPercentageChangeDistribution(allYields, durationInMonths, numBuckets, limitTo95thPercentile) {
@@ -39,7 +41,7 @@ class YieldDistribution extends React.Component {
     shouldComponentUpdate(nextProps, nextState) {
         return this.props.durationInMonths !== nextProps.durationInMonths ||
             this.props.allYields !== nextProps.allYields ||
-            this.state.limitDurationsTo95th !== nextState.limitDurationsTo95th;
+            this.props.limitDurationsTo95th !== nextProps.toggleTrimDistribution;
     }
 
     render() {
@@ -51,7 +53,7 @@ class YieldDistribution extends React.Component {
                 </div>
                 <div>
                     <p className="scale-trigger">
-                        <input type="checkbox" checked={this.state.limitDurationsTo95th}
+                        <input type="checkbox" checked={this.props.limitDurationsTo95th}
                                onChange={this.limitDurations.bind(this)}/>
                         <label>&nbsp;Trim tails (5% right and left)</label>
                     </p>
@@ -62,7 +64,7 @@ class YieldDistribution extends React.Component {
     }
 
     limitDurations(event) {
-        this.setState({limitDurationsTo95th: event.target.checked});
+        this.props.toggleTrimDistribution( event.target.checked );
     }
 
 
@@ -72,7 +74,7 @@ class YieldDistribution extends React.Component {
         const distribution = this.createPercentageChangeDistribution(this.props.allYields,
             durationInMonths,
             NUM_HISTOGRAM_BUCKETS,
-            this.state.limitDurationsTo95th);
+            this.props.limitDurationsTo95th);
         distribution.forEach(xyVal => {
             returnVal.data.push(xyVal[1]);
             returnVal.labels.push(xyVal[0] + 1);
@@ -135,4 +137,10 @@ class YieldDistribution extends React.Component {
     }
 }
 
-export default YieldDistribution;
+const mapStateToProps = state => {
+    return {
+        limitDurationsTo95th: state.distribution.trim
+    };
+}
+
+export default connect(mapStateToProps, {toggleTrimDistribution})(YieldDistribution);
