@@ -1,8 +1,11 @@
 import React from 'react';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 import Spinner from './spinner';
 import * as data from './data';
 import Chart from 'chart.js';
 import DurationDropdown from './durationdropdown';
+import {changeLeftSpreadDuration, changeRightSpreadDuration} from "./actions/spreadActions";
 
 
 const YieldSpreadPanel = props => {
@@ -26,32 +29,28 @@ const YieldSpreadPanel = props => {
 class YieldSpread extends React.Component {
     constructor(props) {
         super(props);
-        this.chart = null;
         this.state = {
-            duration1: 360,
-            duration2: 120,
             chart: null
         };
     }
 
     onDuration1Change(durationInMonths) {
-        this.setState({duration1: durationInMonths});
-
+        this.props.changeLeftSpreadDuration(durationInMonths);
     }
 
     onDuration2Change(durationInMonths) {
-        this.setState({duration2: durationInMonths});
+        this.props.changeRightSpreadDuration(durationInMonths);
     }
 
     shouldComponentUpdate(nextProps, nextState) {
         return this.props.allYields !== nextProps.allYields ||
-            this.state.duration1 !== nextState.duration1 ||
-            this.state.duration2 !== nextState.duration2
+            this.props.duration1 !== nextProps.duration1 ||
+            this.props.duration2 !== nextProps.duration2
     }
 
     render() {
-        const heading = data.getShortDurationLabel(this.state.duration1) + ' - ' +
-            data.getShortDurationLabel(this.state.duration2) + ' Treasury bond spread';
+        const heading = data.getShortDurationLabel(this.props.duration1) + ' - ' +
+            data.getShortDurationLabel(this.props.duration2) + ' Treasury bond spread';
         return (
             <YieldSpreadPanel loading={!this.props.allYields}
                               heading={heading}
@@ -63,7 +62,7 @@ class YieldSpread extends React.Component {
     }
 
     createChart() {
-        const spreads = data.getYieldSpreads(this.state.duration1, this.state.duration2);
+        const spreads = data.getYieldSpreads(this.props.duration1, this.props.duration2);
 
         const chart = new Chart(this.refs.chart, {
             type: 'line',
@@ -125,7 +124,7 @@ class YieldSpread extends React.Component {
 
     componentDidUpdate() {
         if (this.state.chart !== null) {
-            this.state.chart.data.datasets[0].data = data.getYieldSpreads(this.state.duration1, this.state.duration2);
+            this.state.chart.data.datasets[0].data = data.getYieldSpreads(this.props.duration1, this.props.duration2);
             this.state.chart.update();
         }
         else {
@@ -134,4 +133,18 @@ class YieldSpread extends React.Component {
     }
 }
 
-export default YieldSpread;
+const mapStateToProps = state => {
+    return {
+        duration1: state.spread.leftDuration,
+        duration2: state.spread.rightDuration,
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        changeLeftSpreadDuration: bindActionCreators(changeLeftSpreadDuration, dispatch),
+        changeRightSpreadDuration: bindActionCreators(changeRightSpreadDuration, dispatch)
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(YieldSpread);
