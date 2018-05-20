@@ -8,17 +8,44 @@ $font-size-base: 0.875rem;
   .panel-heading {
     font-size: 14px;
   }
+  .the-number {
+    font-size: 70px;
+    font-weight: 100;
+  }
+  .callout {
+    padding-top: 40px;
+    margin-left: 0;
+    font-size: .7rem;
+  }
 }
 
 @include media-breakpoint-up(md) {
   .panel-heading {
     font-size: 15px;
   }
+  .the-number {
+    font-size: 70px;
+    font-weight: 100;
+  }
+  .callout {
+    padding-top: 40px;
+    margin-left: 0;
+    font-size: .7rem;
+  }
 }
 
 @include media-breakpoint-up(lg) {
   .panel-heading {
     font-size: 23px;
+  }
+  .the-number {
+    font-size: 80px;
+    font-weight: 100;
+  }
+  .callout {
+    padding-top: 40px;
+    margin-left: 0;
+    font-size: .875rem;
   }
 }
 
@@ -95,13 +122,5 @@ p.scale-trigger {
   margin-top: 10px;
 }
 
-.the-number {
-  font-size: 80px;
-  font-weight: 100;
-}
 
-.callout {
-  padding-top: 40px;
-  margin-left: 0;
-  padding-left: 0;
-}
+
