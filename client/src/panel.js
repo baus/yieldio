@@ -23,7 +23,7 @@ const Panel = props => {
     if (props.icon) {
         return (
             <div className="panel">
-                <div className="panel-heading">{props.heading}<ExpandContractIcon onExpand={props.onExpand} onContract={props.onContract} icon={props.icon}/></div>
+                <div className="panel-heading" ><span style={{float:"left"}}>{props.heading}</span><ExpandContractIcon onExpand={props.onExpand} onContract={props.onContract} icon={props.icon}/></div>
                 <div className="panel-body">{content}</div>
             </div>
         );
