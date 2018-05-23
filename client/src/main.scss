@@ -3,6 +3,9 @@ $font-size-base: 0.875rem;
 
 @import "../node_modules/bootstrap/scss/bootstrap";
 
+a {
+  color: #686868;
+}
 
 @include media-breakpoint-up(xs) {
   .panel-heading {

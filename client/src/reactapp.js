@@ -6,6 +6,8 @@ import YieldDistribution from './yielddistribution';
 import YieldTable from './yieldtable';
 import YieldCallout from './yieldcallout';
 import YieldSpread from './yieldspread';
+import About from './about';
+
 import * as data from './data';
 
 import store from './store';
@@ -47,7 +49,7 @@ class App extends React.Component {
                     <div className="container-fluid">
                         <div className="row heading no-gutters">
                             <div className="col-md-12"><span className="brand">yield.IO</span>
-                                <span> bond charts updated daily</span>
+                                <span> bond charts updated daily</span><About/>
                             </div>
                         </div>
                         <div className="row no-gutters">
@@ -94,7 +96,7 @@ class App extends React.Component {
                 <div className="container-fluid">
                     <div className="row heading no-gutters">
                         <div className="col-md-12"><span className="brand">yield.IO</span>
-                            <span> bond charts updated daily</span>
+                            <span> bond charts updated daily</span><About/>
                         </div>
                     </div>
                     <div className="row no-gutters">
