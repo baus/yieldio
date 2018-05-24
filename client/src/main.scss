@@ -3,9 +3,6 @@ $font-size-base: 0.875rem;
 
 @import "../node_modules/bootstrap/scss/bootstrap";
 
-a {
-  color: #686868;
-}
 
 @include media-breakpoint-up(xs) {
   .panel-heading {
@@ -63,12 +60,21 @@ body {
   user-select: none;
 }
 
+h3 {
+  font-weight: 300;
+}
+
 .heading {
   margin-bottom: -10px;
 }
 
-h3 {
-  font-weight: 300;
+.about {
+  float: right;
+  margin-top: 18px;
+}
+
+a.about {
+  color: #686868;
 }
 
 .brand {

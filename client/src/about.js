@@ -20,7 +20,7 @@ class About extends React.Component {
     render() {
         return (
             <span>
-                <a style={{float:"right", marginTop:"17px"}} href="#" onClick={this.toggle}>About</a>
+                <a class="about" href="#" onClick={this.toggle}>About</a>
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                     <ModalHeader toggle={this.toggle}>About Yield.IO</ModalHeader>
                     <ModalBody>
