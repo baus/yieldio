@@ -1,5 +1,5 @@
 /**
- * This module is used to download and manage the data Treasury bond yields. It uses the following endpoint to retrieve
+ * This module is used to download and manage Treasury bond yields. It uses the following endpoint to retrieve
  * the data: https://yield.io/api/allYields.json.
  *
  * TODO: Add description of allYields.json
@@ -90,8 +90,8 @@ export function getShortDurationLabel(durationInMonths) {
 }
 
 /**
- * Loads all the
- * @param callback
+ * Loads all the yield data from https://yield.io/api/allYields.json
+ * @param callback when transfer is complete, callback is called containing all yields
  */
 export function getAllYields(callback) {
     fetch('https://yield.io/api/allYields.json').then(response => {
