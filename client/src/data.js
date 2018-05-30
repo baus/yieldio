@@ -152,7 +152,7 @@ export function getYieldSpreads(duration1InMonths, duration2InMonths) {
  * Perform binary search to find the yields for a given date
  *
  * @param date object
- * @returns Array of objects with {t: value, y: vaule } where t is the current time and y is the current spread
+ * @returns Array of 3 values for each duration [yield, change from previous yield, % change from previous yield]
  */
 export function getYieldsForDate(date) {
     return allYields[binarySearch(allYields, date.getTime(), (a, b) => {
