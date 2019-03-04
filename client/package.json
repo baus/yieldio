@@ -6,7 +6,7 @@
     "binary-search": "^1.3.3",
     "bootstrap": "^4.0.0",
     "chart.js": "^2.7.2",
-    "compute-histogram": "^0.9.5",
+    "compute-histogram": "^0.9.7",
     "material-icons-react": "^1.0.0",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",

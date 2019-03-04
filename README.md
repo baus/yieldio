@@ -9,6 +9,7 @@ To build and run the client execute the following:
 ```sh
 cd client
 npm install
+npm build-css
 npm start
  ```
 
