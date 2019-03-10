@@ -93,13 +93,10 @@ export function getShortDurationLabel(durationInMonths) {
  * Loads all the yield data from https://yield.io/api/allYields.json
  * @param callback when transfer is complete, callback is called containing all yields
  */
-export function getAllYields(callback) {
-    fetch('https://yield.io/api/allYields.json').then(response => {
-        return response.json();
-    }).then(json=>{
-        allYields = json;
-        callback(allYields);
-    });
+export async function getAllYields() {
+    const response = await fetch('https://yield.io/api/allYields.json');
+    allYields = await response.json();
+    return allYields;
 }
 
 /**
